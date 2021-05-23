@@ -1,0 +1,51 @@
+body
+{
+	margin:0;
+	padding: 0;
+    font-family: sans-serif;
+	background: url(image/query-background.jpg);
+	background-size: cover;
+}
+table th,table td{
+    border:1px solid #aaa;
+}
+table{
+    border-collapse:collapse;
+    background-color: #fff;
+}
+.flighttable{
+    width:1072px;
+    height:470px;
+    margin-left: 230px;
+    overflow:auto;
+    border:1px solid #ddd
+}
+.querybox{
+    position: absolute;
+    top:50px;
+    left:50%;
+    width: 1200px;
+    height: 90px;
+    margin-left: -600px;
+
+
+}
+.flighttb{
+    padding-top: 150px;
+}
+.querybox form{
+    margin-left: 80px;
+    margin-top: 20px;
+}
+.hangbanhao{
+    margin-bottom: 10px;
+}
+.querybutton{
+    position: absolute;
+    left: 800px;
+}
+.returnbutton{
+    position: absolute;
+    left: 968px;
+    top: 105px;
+}

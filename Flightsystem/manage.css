@@ -1,0 +1,62 @@
+body
+{
+	margin:0;
+	padding: 0;
+	font-family: sans-serif;
+	background: url(image/manage-background.jpg);
+	background-size: cover;
+}
+table th,table td{
+    border:1px solid #aaa;
+}
+table{
+    border-collapse:collapse;
+    background-color: #fff;
+}
+.flighttable{
+    width:1072px;
+    height:470px;
+    margin-left: 230px;
+    overflow:auto;
+    border:1px solid #ddd
+}
+.flighttb{
+
+}
+.addpage{
+    width: 500px;
+    height: 400px;
+    margin-left: 531px;
+    margin-top: 100px;
+    background: rgba(0,0,0,.1);
+	box-shadow: 0 15px 25px rgba(0,0,0,.5);
+	border-radius: 10px;
+    padding-top: 20px;
+    padding-left: 50px;
+}
+.dateinput{
+    width: 40px;
+}
+.nav{
+    width: 100%;
+}
+.nav button{
+    width: 33%;
+    height: 30px;
+    margin: 0;
+
+}
+.queryform{
+    margin-left: 270px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.querybutton{
+    margin-left: 450px;
+}
+.deletebutton{
+    margin-left: 79px;
+}
+.fid{
+    margin-bottom: 10px;
+}

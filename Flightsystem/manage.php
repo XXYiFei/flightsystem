@@ -16,9 +16,9 @@
         }
     ?>
     <div class="nav">
-        <button onclick="showmanage()">查询航班</button>  
-        <button onclick="showadd()">添加/修改航班</button>
-        <button onclick="window.location.href = 'main.html'">主页</button>
+        <button class="nav-button1" onclick="showmanage()">查询航班</button>  
+        <button class="nav-button2" onclick="showadd()">添加/修改航班</button>
+        <button class="nav-button3" onclick="window.location.href = 'main.html'">主页</button>
     </div>
     
     
@@ -49,32 +49,32 @@
     <!--添加/修改页面-->
     <div class="addpage" id="add" style="display:none">           
         <form action="manage.php" method="POST">
-            航班号：
+            <label>航班号：</label>
             <input type="text" name="f_id" id="" value=><br>
-            起点：
+            <label>起点：</label>
             <input type="text" name="src" id="" value=><br>
-            终点：
+            <label>终点：</label>
             <input type="text" name="des" id="" value=><br>
-            日期：
+            <label> 日期：</label>
             <input class="dateinput" type="text" name="year" id="">年
             <input class="dateinput" type="text" name="month" id="">月
             <input class="dateinput" type="text" name="day" id="">日<br>
-            起飞时刻：
+            <label>起飞时刻：</label>
             <input type="text" name="start_time" id="" value=><br>
-            到达时刻：
+            <label>到达时刻：</label>
             <input type="text" name="end_time" id="" value=><br>
-            剩余座位：
+            <label>剩余座位：</label>
             <input type="text" name="remain_seats" id="" value=><br>
-            票价：
+            <label>票价：</label>
             <input type="text" name="fares" id="" value=><br>
-            折扣票数：
+            <label>折扣票数：</label>
             <input type="text" name="discount_nums" id="" value=><br>
-            折扣率：
+            <label>折扣率：</label>
             <input type="text" name="discount" id="" value=><br>
-            航班所属航空公司：
+            <label>航班所属航空公司：</label>
             <input type="text" name="company" id="" value=><br>
-            <input type="submit" value="添加" name="add">
-            <input type="submit" value="修改" name="updata">
+            <input class="subbutton" type="submit" value="添加" name="add">
+            <input class="subbutton" type="submit" value="修改" name="updata">
 
         </form>
     </div>
@@ -85,6 +85,10 @@
             <div class="fid">
                 航班号：
                 <input type="text" name="f_id" id="" value=>
+                起点：
+                <input type="text" name="f_src" id="" value=>
+                终点:
+                <input type="text" name="f_des" id="" value=>
                 <input class="querybutton" type="submit" value="查询" name="query">
             </div>
             
@@ -149,10 +153,12 @@
     $discount_nums=$_POST["discount_nums"];
     $discount=$_POST["discount"];
     $company=$_POST["company"];
+    $f_src=$_POST["f_src"];
+    $f_des=$_POST["f_des"];
 
     //处理请求
     if (!empty($_POST['query'])) {                //查询
-        querydb($db, $f_id, $year, $month, $day);
+        querydb($db,$f_id,$year,$month,$day,$f_src,$f_des);
     } elseif (!empty($_POST['delete'])) {          //删除
         deletdata($db, $f_id);
         showdb($db);
@@ -233,46 +239,56 @@ function showdb($db)
     echo '</div>';
 }
 
-function querydb($db,$f_id,$year,$month,$day){       //查询数据并显示
-    if ($f_id&&$year&&$month&&$day) {
-        $date=$year.'-'.$month.'-'.$day;
-        $query="select * from flight where f_id='$f_id' && f_date='$date'";
-        $result=mysqli_query($db, $query);
-        if (!$result) {
-            print 'error';
+function querydb($db,$f_id,$year,$month,$day,$src,$des){       //查询数据并显示
+    if(!$f_id){
+        $f_id='%';
+    }
+    if(!$year){
+        $year='%';
+    }
+    if(!$month){
+        $month='%';
+    }
+    if(!$day){
+        $day='%';
+    }
+    if(!$f_src){
+        $f_src='%';
+    }
+    if(!$f_des){
+        $f_des='%';
+    }
+    $date=$year.'-'.$month.'-'.$day;
+    $query="SELECT * from flight where f_id LIKE '$f_id' AND f_date LIKE '$date' AND f_src LIKE '$f_src' AND f_des LIKE '$f_des'";
+    $result=mysqli_query($db, $query);
+    if (!$result) {
+        print 'error';
+    }
+    echo '<div class="flighttable" id="flighttable">';
+    echo '<table align="center" style="border-top: 0;">';
+    echo '<colgroup>
+        <col width="70">
+        <col width="80">
+        <col width="80">
+        <col width="140">
+        <col width="75">
+        <col width="75">
+        <col width="100">
+        <col width="80">
+        <col width="80">
+        <col width="80">
+        <col width="200">
+        <col width="17">
+        </colgroup>';
+    while ($row=mysqli_fetch_assoc($result)) {
+        echo '<tr align="center">';
+        foreach ($row as $data) {
+            echo "<td>{$data}</td>";
         }
-        echo '<div class="flighttable" id="flighttable">';
-        echo '<table align="center" style="border-top: 0;">';
-        echo '<colgroup>
-            <col width="70">
-            <col width="80">
-            <col width="80">
-            <col width="140">
-            <col width="75">
-            <col width="75">
-            <col width="100">
-            <col width="80">
-            <col width="80">
-            <col width="80">
-            <col width="200">
-            <col width="17">
-            </colgroup>';
-        while ($row=mysqli_fetch_assoc($result)) {
-            echo '<tr align="center">';
-            foreach ($row as $data) {
-                echo "<td>{$data}</td>";
-            }
-            echo '<td></td>';
-            echo '</tr>';
-        }
+        echo '</tr>';
+    }
     echo '</table>';
     echo '</div>';
-    } else {
-        echo "<script>
-                alert('信息填写不完整');
-            </script>";
-        showdb($db);
-    }
 }
 
 function deletdata($db, $f_id){                       //删除数据
@@ -291,14 +307,14 @@ function deletdata($db, $f_id){                       //删除数据
     }
 }
 
-function add(
+function add(//添加数据
     $db,
     $f_id,
     $src,
     $des,
     $year,
-    $month,       //添加数据
-                $day,
+    $month,       
+    $day,
     $start_time,
     $end_time,
     $remain_seats,
@@ -329,6 +345,7 @@ function add(
                     </script>";
         }
     } else {                                         //信息填写不完整
+        echo $f_id,$src,$des,$year,$month,$day,$start_time,$end_time,$remain_seats,$fares,$discount_nums,$discount,$company;
         echo "<script>
                 alert('信息填写不完整');
             </script>";
@@ -370,6 +387,7 @@ function updata(
                         f_fares='$fares',f_discount_nums='$discount_nums',
                         f_discount='$discount',f_subordinate_company='$company' 
                         WHERE f_id='$f_id';";
+            echo $updata;
             mysqli_query($db, $updata);
             echo "<script>
                         alert('修改成功');

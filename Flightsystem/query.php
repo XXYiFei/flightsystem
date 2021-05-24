@@ -15,6 +15,10 @@
             <div class="hangbanhao">
                 航班号：
                 <input type="text" name="f_id" id="" value=>
+                起点：
+                <input type="text" name="f_src" id="" value=>
+                终点
+                <input type="text" name="f_des" id="" value=>
                 <input class="querybutton" type="submit" value="查询" name="query"><br>
             </div>
             日期：
@@ -76,8 +80,10 @@
     $year=$_POST["year"];
     $month=$_POST["month"];
     $day=$_POST["day"];
+    $src=$_POST["f_src"];
+    $des=$_POST["f_des"];
     if(!empty($_POST['query'])){                //查询
-        querydb($db,$f_id,$year,$month,$day);
+        querydb($db,$f_id,$year,$month,$day,$src,$des);
     }else{
         showdb($db);
     }
@@ -86,46 +92,56 @@
         
 ?>
 <?php
-function querydb($db,$f_id,$year,$month,$day){       //查询数据并显示
-    if ($f_id&&$year&&$month&&$day) {
-        $date=$year.'-'.$month.'-'.$day;
-        $query="select * from flight where f_id='$f_id' && f_date='$date'";
-        $result=mysqli_query($db, $query);
-        if (!$result) {
-            print 'error';
+function querydb($db,$f_id,$year,$month,$day,$src,$des){       //查询数据并显示
+    if(!$f_id){
+        $f_id='%';
+    }
+    if(!$year){
+        $year='%';
+    }
+    if(!$month){
+        $month='%';
+    }
+    if(!$day){
+        $day='%';
+    }
+    if(!$src){
+        $src='%';
+    }
+    if(!$des){
+        $des='%';
+    }
+    $date=$year.'-'.$month.'-'.$day;
+    $query="SELECT * from flight where f_id LIKE '$f_id' AND f_date LIKE '$date' AND f_src LIKE '$src' AND f_des LIKE '$des'";
+    $result=mysqli_query($db, $query);
+    if (!$result) {
+        print 'error';
+    }
+    echo '<div class="flighttable" id="flighttable">';
+    echo '<table align="center" style="border-top: 0;">';
+    echo '<colgroup>
+        <col width="70">
+        <col width="80">
+        <col width="80">
+        <col width="140">
+        <col width="75">
+        <col width="75">
+        <col width="100">
+        <col width="80">
+        <col width="80">
+        <col width="80">
+        <col width="200">
+        <col width="17">
+        </colgroup>';
+    while ($row=mysqli_fetch_assoc($result)) {
+        echo '<tr align="center">';
+        foreach ($row as $data) {
+            echo "<td>{$data}</td>";
         }
-        echo '<div class="flighttable" >';
-        echo '<table align="center" style="border-top: 0;">';
-        echo '<colgroup>
-            <col width="70">
-            <col width="80">
-            <col width="80">
-            <col width="140">
-            <col width="75">
-            <col width="75">
-            <col width="100">
-            <col width="80">
-            <col width="80">
-            <col width="80">
-            <col width="200">
-            <col width="17">
-            </colgroup>';
-        while ($row=mysqli_fetch_assoc($result)) {
-            echo '<tr align="center">';
-            foreach ($row as $data) {
-                echo "<td>{$data}</td>";
-            }
-            echo '<td></td>';
-            echo '</tr>';
-        }
+        echo '</tr>';
+    }
     echo '</table>';
     echo '</div>';
-    } else {
-        echo "<script>
-                alert('信息填写不完整');
-            </script>";
-        showdb($db);
-    }
 }
 
 function showdb($db){                                //显示数据

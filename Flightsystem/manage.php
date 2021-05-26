@@ -226,7 +226,6 @@ function showdb($db)
         <col width="80">
         <col width="80">
         <col width="200">
-        <col width="17">
         </colgroup>';
     while ($row=mysqli_fetch_assoc($result)) {
         echo '<tr align="center">';
@@ -239,7 +238,7 @@ function showdb($db)
     echo '</div>';
 }
 
-function querydb($db,$f_id,$year,$month,$day,$src,$des){       //查询数据并显示
+function querydb($db,$f_id,$year,$month,$day,$f_src,$f_des){       //查询数据并显示
     if(!$f_id){
         $f_id='%';
     }
@@ -265,7 +264,7 @@ function querydb($db,$f_id,$year,$month,$day,$src,$des){       //查询数据并
         print 'error';
     }
     echo '<div class="flighttable" id="flighttable">';
-    echo '<table align="center" style="border-top: 0;">';
+    echo '<table align="center" style="border-top: 0;margin-left:0;">';
     echo '<colgroup>
         <col width="70">
         <col width="80">
@@ -278,7 +277,6 @@ function querydb($db,$f_id,$year,$month,$day,$src,$des){       //查询数据并
         <col width="80">
         <col width="80">
         <col width="200">
-        <col width="17">
         </colgroup>';
     while ($row=mysqli_fetch_assoc($result)) {
         echo '<tr align="center">';
@@ -296,13 +294,13 @@ function deletdata($db, $f_id){                       //删除数据
     $result=mysqli_query($db, $query);
     if (!$row=mysqli_fetch_assoc($result)) {
         echo "<script>
-                alert('删除失败：输入信息有误或航班不存在。');
+                window.onload=function(){alert('删除失败：输入信息有误或航班不存在。');}
             </script>";
     } else {
         $delete="delete from flight where f_id='$f_id'";
         mysqli_query($db, $delete);
         echo "<script>
-                alert('删除成功！');
+                window.onload=function(){alert('删除成功！')};
             </script>";
     }
 }
@@ -333,7 +331,7 @@ function add(//添加数据
         $result=mysqli_query($db, $query);
         if ($row=mysqli_fetch_assoc($result)) {         //若已存在则提示“已存在”
             echo "<script>
-                        alert('航班已存在！');
+                        window.onload=function(){alert('航班已存在！')};
                     </script>";
         } else {                                      //若不存在则添加
             $insert="INSERT INTO flight VALUES('$f_id','$src','$des',
@@ -341,13 +339,13 @@ function add(//添加数据
                         '$fares','$discount_nums','$discount','$company');";
             mysqli_query($db, $insert);
             echo "<script>
-                        alert('添加成功');
-                    </script>";
+                    window.onload=function(){alert('添加成功')};
+                </script>";
         }
     } else {                                         //信息填写不完整
         echo $f_id,$src,$des,$year,$month,$day,$start_time,$end_time,$remain_seats,$fares,$discount_nums,$discount,$company;
         echo "<script>
-                alert('信息填写不完整');
+                window.onload=function(){alert('信息填写不完整')};
             </script>";
     }
 }
@@ -378,8 +376,8 @@ function updata(
         $result=mysqli_query($db, $query);
         if (!$row=mysqli_fetch_assoc($result)) {         //若不存在则提示“不存在”
             echo "<script>
-                        alert('航班不存在！');
-                    </script>";
+                    window.onload=function(){alert('航班不存在！')};
+                </script>";
         } else {                                      //若存在则修改
             $updata="UPDATE flight SET f_src='$src',f_des='$des',
                         f_date='$date',f_start_time='$start_time',
@@ -387,15 +385,14 @@ function updata(
                         f_fares='$fares',f_discount_nums='$discount_nums',
                         f_discount='$discount',f_subordinate_company='$company' 
                         WHERE f_id='$f_id';";
-            echo $updata;
             mysqli_query($db, $updata);
             echo "<script>
-                        alert('修改成功');
-                    </script>";
+                    window.onload=function(){alert('修改成功')};
+                </script>";
         }
     } else {                                         //信息填写不完整
         echo "<script>
-                alert('信息填写不完整');
+                window.onload=function(){alert('信息填写不完整')};
             </script>";
     }
 }

@@ -54,12 +54,12 @@
            exit;
         }else{
             echo "<script>
-                    alert('用户名或密码错误！');
+                    window.onload=function(){alert('用户名或密码错误！');}
                 </script>";
         }
         }else{                      //如果用户名或密码有空
             echo "<script>
-                    alert('用户名或密码为空！');
+                    window.onload=function(){alert('用户名或密码为空！');}
                 </script>";
         } 
     }

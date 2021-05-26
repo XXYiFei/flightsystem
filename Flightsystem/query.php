@@ -151,7 +151,7 @@ function showdb($db){                                //显示数据
         print 'error';
     }
     echo '<div class="flighttable">';
-    echo '<table align="center" style="border-top: 0;">';
+    echo '<table align="center" style="border-top: 0;margin: left 0;">';
     echo '<colgroup>
         <col width="70">
         <col width="80">
@@ -164,7 +164,6 @@ function showdb($db){                                //显示数据
         <col width="80">
         <col width="80">
         <col width="200">
-        <col width="17">
         </colgroup>';
     while ($row=mysqli_fetch_assoc($result)) {
         echo '<tr align="center">';
